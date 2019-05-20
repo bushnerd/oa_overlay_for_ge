@@ -14,7 +14,7 @@
             <refreshVisibility>0</refreshVisibility>
             <flyToView>0</flyToView>
             <Link>
-                <href>http://yourserver.com/cgi-bin/viewCenteredPlacemark.py</href>
+                <href>http://127.0.0.1/cgi-bin/viewCenteredPlacemark.py</href>
                 <refreshInterval>2</refreshInterval>
                 <viewRefreshMode>onStop</viewRefreshMode>
                 <viewRefreshTime>1</viewRefreshTime>

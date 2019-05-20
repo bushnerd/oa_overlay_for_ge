@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!D:\Program Files\Python37\python.exe
+# -*- coding: UTF-8 -*-
 
 import cgi
 
@@ -25,5 +26,5 @@ kml = (
    '</kml>'
    ) %(center_lng, center_lat)
 
-print 'Content-Type: application/vnd.google-earth.kml+xml\n'
-print kml
+print('Content-Type: application/vnd.google-earth.kml+xml\n')
+print(kml)
