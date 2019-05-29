@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+    <Folder>
+        <name>Network Links</name>
+        <visibility>0</visibility>
+        <open>0</open>
+        <description>oa_overlay_for_ge</description>
+        <NetworkLink>
+            <name>oa_overlay_for_ge</name>
+            <visibility>0</visibility>
+            <open>0</open>
+            <description>postion image/video from outdoor assistant</description>
+            <refreshVisibility>0</refreshVisibility>
+            <flyToView>0</flyToView>
+            <Link>
+                <href>http://127.0.0.1/cgi-bin/oa_overlay_for_ge.py</href>
+                <refreshInterval>2</refreshInterval>
+                <viewRefreshMode>onStop</viewRefreshMode>
+                <viewRefreshTime>1</viewRefreshTime>
+            </Link>
+        </NetworkLink>
+    </Folder>
+</kml>
