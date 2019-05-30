@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
     <Folder>
-        <name>Network Links</name>
+        <name>overlay_for_ge</name>
         <visibility>0</visibility>
         <open>0</open>
-        <description>oa_overlay_for_ge</description>
+        <description>additional overlay for google earth pro</description>
         <NetworkLink>
             <name>oa_overlay_for_ge</name>
             <visibility>0</visibility>

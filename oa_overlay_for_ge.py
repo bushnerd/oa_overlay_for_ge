@@ -23,10 +23,13 @@ kml = (
    '<kml xmlns="http://www.opengis.net/kml/2.2">\n')
 
 for file in files:
+    longtitude = file['longtitude']
+    latitude = file['latitude']
+
     kml = (kml + '<Placemark>\n'
     + '<name>potionFile</name>\n'
     + '<Point>\n'
-    + '<coordinates>%.6f,%.6f</coordinates>\n' %(file['longtitude'], file['latitude'])
+    + f'<coordinates>{longtitude},{latitude}</coordinates>\n'
     + '</Point>\n'
     + '</Placemark>\n' )
 
