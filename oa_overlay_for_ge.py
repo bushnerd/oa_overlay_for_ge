@@ -31,8 +31,10 @@ postion_files = oa_agent.request_position_files()
 files = postion_files['files']
 
 kml = ( 
-   '<?xml version="1.0" encoding="UTF-8"?>\n'
-   '<kml xmlns="http://www.opengis.net/kml/2.2">\n')
+    '<?xml version="1.0" encoding="UTF-8"?>\n'
+    '<kml xmlns="http://www.opengis.net/kml/2.2">\n'
+    '<Document>\n'
+    '<name>position files</name>')
 
 for file in files:
     longtitude = file['longtitude']
@@ -41,11 +43,12 @@ for file in files:
     kml = (kml + '<Placemark>\n'
     + '<name>potionFile</name>\n'
     + '<Point>\n'
-    + f'<coordinates>{longtitude},{latitude}</coordinates>\n'
+    + f'<coordinates>{longtitude},{latitude},0</coordinates>\n'
     + '</Point>\n'
     + '</Placemark>\n' )
 
-kml = kml + '</kml>'
+kml = kml + '</Document>\n</kml>'
 
 print('Content-Type: application/vnd.google-earth.kml+xml\n')
+logger.info(kml)
 print(kml)
