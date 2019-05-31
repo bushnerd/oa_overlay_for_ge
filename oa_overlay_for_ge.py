@@ -2,8 +2,20 @@
 # -*- coding: UTF-8 -*-
 
 import cgi
+import logging
+
 import oa_agent
 
+logger = logging.getLogger('oa_overlay_for_ge')
+logger.setLevel(logging.DEBUG)
+
+handler = logging.FileHandler('oa_overlay_for_ge.log')
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(funcName)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+# 
 # url = cgi.FieldStorage()
 # bbox = url['BBOX'].value
 # bbox = bbox.split(',')
@@ -14,7 +26,7 @@ import oa_agent
 
 # postion_files = oa_agent.request_position_files(north,south, west, east)
 
-postion_files = oa_agent.request_position_files(0,0, 0, 0)
+postion_files = oa_agent.request_position_files()
 
 files = postion_files['files']
 
