@@ -15,18 +15,16 @@ formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(filename)s:%(line
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-# 
-# url = cgi.FieldStorage()
-# bbox = url['BBOX'].value
-# bbox = bbox.split(',')
-# west = float(bbox[0])
-# south = float(bbox[1])
-# east = float(bbox[2])
-# north = float(bbox[3])
+url = cgi.FieldStorage()
+bbox = url['BBOX'].value
 
-# postion_files = oa_agent.request_position_files(north,south, west, east)
+bbox = bbox.split(',')
+west = float(bbox[0])
+south = float(bbox[1])
+east = float(bbox[2])
+north = float(bbox[3])
 
-postion_files = oa_agent.request_position_files()
+postion_files = oa_agent.request_position_files(north, south, west, east, 15.3335)
 
 files = postion_files['files']
 
@@ -50,5 +48,5 @@ for file in files:
 kml = kml + '</Document>\n</kml>'
 
 print('Content-Type: application/vnd.google-earth.kml+xml\n')
-logger.info(kml)
+logger.debug(kml)
 print(kml)

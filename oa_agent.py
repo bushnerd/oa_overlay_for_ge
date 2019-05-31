@@ -44,11 +44,11 @@ Connection: keep-alive
 def request_position_files(latitudeLeftTop=0, latitudeRightBottom=0,
                            longtitudeLeftTop=0, longtitudeRightBottom=0, mapHierarchy=0):
     # 武汉市黄陂区姚家山
-    latitudeLeftTop = 31.23257211197333
-    latitudeRightBottom = 31.27027234988102
-    longtitudeLeftTop = 114.1778958951424
-    longtitudeRightBottom = 114.2035015071832
-    mapHierarchy = 15.33358669281006
+    # latitudeLeftTop = 31.23257211197333
+    # latitudeRightBottom = 31.27027234988102
+    # longtitudeLeftTop = 114.1778958951424
+    # longtitudeRightBottom = 114.2035015071832
+    # mapHierarchy = 15.33358669281006
 
     logger.info('latitudeLeftTop: %f, latitudeRightBottom: %f, longtitudeLeftTop: %f, longtitudeRightBottom: %f, mapHierarchy: %f', 
                 latitudeLeftTop,
