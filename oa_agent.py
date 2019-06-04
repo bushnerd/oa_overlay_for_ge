@@ -41,6 +41,7 @@ Connection: keep-alive
 # p_userId='0'
 # version='1'
 
+# mapHierarchy不确定这个参数是否有用，还有一个isMaxHierarchy，可能是缩放层级大于多少才请求图片，要不然请求了也显示不完全
 def request_position_files(latitudeLeftTop=0, latitudeRightBottom=0,
                            longtitudeLeftTop=0, longtitudeRightBottom=0, mapHierarchy=0):
     # 武汉市黄陂区姚家山

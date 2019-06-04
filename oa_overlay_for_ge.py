@@ -24,7 +24,7 @@ south = float(bbox[1])
 east = float(bbox[2])
 north = float(bbox[3])
 
-postion_files = oa_agent.request_position_files(north, south, west, east, 15.3335)
+postion_files = oa_agent.request_position_files(north, south, west, east, 15)
 
 files = postion_files['files']
 
@@ -39,7 +39,7 @@ for file in files:
     latitude = file['latitude']
 
     kml = (kml + '<Placemark>\n'
-    + '<name>potionFile</name>\n'
+    + '<name></name>\n'
     + '<Point>\n'
     + f'<coordinates>{longtitude},{latitude},0</coordinates>\n'
     + '</Point>\n'
@@ -48,5 +48,5 @@ for file in files:
 kml = kml + '</Document>\n</kml>'
 
 print('Content-Type: application/vnd.google-earth.kml+xml\n')
-logger.debug(kml)
+# logger.debug(kml)
 print(kml)
