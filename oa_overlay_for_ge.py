@@ -6,14 +6,7 @@ import logging
 
 import oa_agent
 
-logger = logging.getLogger('oa_overlay_for_ge')
-logger.setLevel(logging.DEBUG)
-
-handler = logging.FileHandler('oa_overlay_for_ge.log')
-handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(funcName)s - %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+logger = logging.getLogger('logger') 
 
 url = cgi.FieldStorage()
 bbox = url['BBOX'].value
