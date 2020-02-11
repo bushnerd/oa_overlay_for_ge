@@ -1,3 +1,5 @@
-oa_overlay_for_ge.log
+*.log
 0Collection/
 __pycache__/
+misc/
+.vscode/
