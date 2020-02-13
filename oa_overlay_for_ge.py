@@ -4,10 +4,11 @@
 import cgi
 import logging
 
-# import log
+import log
 import oa_agent
 
 logger = logging.getLogger("log.{module_name}".format(module_name=__name__))
+
 url = cgi.FieldStorage()
 bbox = url['BBOX'].value
 
@@ -19,14 +20,12 @@ north = float(bbox[3])
 
 postion_files = oa_agent.request_position_files(north, south, west, east, 15)
 
-files = postion_files['files']
-
 kml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
        '<kml xmlns="http://www.opengis.net/kml/2.2">\n'
        '<Document>\n'
        '<name>position files</name>')
 
-for file in files:
+for file in postion_files:
     longtitude = file['longtitude']
     latitude = file['latitude']
 

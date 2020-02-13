@@ -97,6 +97,40 @@ def find_track_positions_list(track_Id=''):
         return track_positions_list
 
 
+def get_track_marker_list(track_Id=''):
+    logger.info('trackId={}'.format(track_Id))
+    headers = {
+        'Accept':
+        '*/*',
+        'Accept-Encoding':
+        'gzip, deflate',
+        'Accept-Language':
+        'zh-CN,zh;q=0.9,en;q=0.8,zh-TW;q=0.7',
+        'Cache-Control':
+        'no-cache',
+        'Connection':
+        'keep-alive',
+        'Cookie':
+        'pgv_pvid=8835094330; UM_distinctid=1700e0fb6fb23f-0841f4aa994d1e-47e1039-181db4-1700e0fb6fc94c; CNZZDATA1000341086=1941407547-1542934706-%7C1581405252; JSESSIONID=101E6EB49840EF71C15DA400C4CA8D30-n1',
+        'DNT':
+        '1',
+        'Host':
+        'www.2bulu.com',
+        'Pragma':
+        'no-cache',
+        'Referer':
+        'http://www.2bulu.com/track/t-156g%25252BsXGkoI%25253D.htm',
+        'User-Agent':
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
+    }
+    params = {'trackId': track_Id}
+    response = requests.get(GET_TRACK_MARKER_LIST_URL,
+                            params=params,
+                            headers=headers)
+    if (response.status_code == 200):
+        logger.debug('{}'.format(response.json()))
+
+
 # mapHierarchy不确定这个参数是否有用，还有一个isMaxHierarchy，可能是缩放层级大于多少才请求图片，要不然请求了也显示不完全
 def request_position_files(latitudeLeftTop=0,
                            latitudeRightBottom=0,
