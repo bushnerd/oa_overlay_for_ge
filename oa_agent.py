@@ -16,6 +16,8 @@ logger = logging.getLogger("log.{module_name}".format(module_name=__name__))
 
 FIND_AROUND_TRACK_LIST_URL = 'http://www.2bulu.com/track/find_around_track_list.htm'
 FIND_TRACK_POSITIONS_LIST_URL = 'http://www.2bulu.com/track/find_track_positions_list.htm'
+GET_TRACK_MARKER_LIST_URL = 'http://www.2bulu.com/track/get_track_marker_list_2.htm'
+REQUEST_POSITIONS_FILES_URL = 'https://helper.2bulu.com/position/reqPositionFiles'
 
 
 def find_around_track_list(lat=0, lng=0, page_number=1, page_size=8):
@@ -89,6 +91,10 @@ def find_track_positions_list(track_Id=''):
                             headers=headers)
     if (response.status_code == 200):
         logger.debug('{}'.format(response.json()))
+        track_positions_list = response.json()['trackPositions'][0]
+        logger.info('{} track_positions found'.format(
+            len(track_positions_list)))
+        return track_positions_list
 
 
 # mapHierarchy不确定这个参数是否有用，还有一个isMaxHierarchy，可能是缩放层级大于多少才请求图片，要不然请求了也显示不完全
@@ -165,15 +171,13 @@ def request_position_files(latitudeLeftTop=0,
     params['longtitudeRightBottom'] = str(longtitudeRightBottom)
     params['mapHierarchy'] = str(mapHierarchy)
 
-    response_postion_files = requests.get(
-        'https://helper.2bulu.com/position/reqPositionFiles',
-        params=params,
-        headers=headers)
-
-    logger.info('Get %d position files info',
-                len(response_postion_files.json()['files']))
-
-    return response_postion_files.json()
+    response_postion_files = requests.get(REQUEST_POSITIONS_FILES_URL,
+                                          params=params,
+                                          headers=headers)
+    json = response_postion_files.json()
+    if json['errCode'] is '0':
+        logger.info('Get %d position files info', len(json['files']))
+        return json['files']
 
 
 if (__name__ == '__main__'):
