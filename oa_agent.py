@@ -1,4 +1,4 @@
-#!D:\Program Files\Python37\python.exe
+#!D:\Program Files (x86)\Python38-32\python.exe
 # -*- coding: UTF-8 -*-
 
 ' oa_agent module for communicate with outdoor_assistant '
