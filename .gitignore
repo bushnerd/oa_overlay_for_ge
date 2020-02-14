@@ -1,4 +1,4 @@
-*.log
+*.log*
 0Collection/
 __pycache__/
 misc/

@@ -2,19 +2,18 @@
 <kml xmlns="http://www.opengis.net/kml/2.2">
     <Folder>
         <name>overlay_for_ge</name>
-        <visibility>0</visibility>
+        <visibility>1</visibility>
         <open>0</open>
         <description>additional overlay for google earth pro</description>
         <NetworkLink>
             <name>oa_overlay_for_ge</name>
-            <visibility>0</visibility>
+            <visibility>1</visibility>
             <open>0</open>
             <description>postion image/video from outdoor assistant</description>
             <refreshVisibility>0</refreshVisibility>
             <flyToView>0</flyToView>
             <Link>
                 <href>http://127.0.0.1/cgi-bin/oa_overlay_for_ge.py</href>
-                <refreshInterval>2</refreshInterval>
                 <viewRefreshMode>onStop</viewRefreshMode>
                 <viewRefreshTime>1</viewRefreshTime>
             </Link>
