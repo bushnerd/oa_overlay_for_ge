@@ -1,40 +1,19 @@
-#!D:\Program Files (x86)\Python38-32\python.exe
+#!D:/Program Files (x86)/Python38-32/python.exe
 # -*- coding: UTF-8 -*-
 
 import cgi
+# import cgitb
 import logging
 
+import ge_agent
 import log
 import oa_agent
 
+# cgitb.enable()
 logger = logging.getLogger("log.{module_name}".format(module_name=__name__))
 
-url = cgi.FieldStorage()
-bbox = url['BBOX'].value
+form = cgi.FieldStorage()
+bbox_url = form.getvalue('BBOX')
+logger.info('BBOX url from Google Earth = {}'.format(bbox_url))
 
-bbox = bbox.split(',')
-west = float(bbox[0])
-south = float(bbox[1])
-east = float(bbox[2])
-north = float(bbox[3])
-
-postion_files = oa_agent.request_position_files(north, south, west, east, 15)
-
-kml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
-       '<kml xmlns="http://www.opengis.net/kml/2.2">\n'
-       '<Document>\n'
-       '<name>position files</name>')
-
-for file in postion_files:
-    longtitude = file['longtitude']
-    latitude = file['latitude']
-
-    kml = (kml + '<Placemark>\n' + '<name></name>\n' + '<Point>\n' +
-           f'<coordinates>{longtitude},{latitude},0</coordinates>\n' +
-           '</Point>\n' + '</Placemark>\n')
-
-kml = kml + '</Document>\n</kml>'
-
-print('Content-Type: application/vnd.google-earth.kml+xml\n')
-logger.debug(kml)
-print(kml)
+ge_agent.generate_kml(bbox_url)
