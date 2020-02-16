@@ -40,11 +40,12 @@ def generate_kml(url):
 
     kml = kml + '</Document>\n</kml>'
 
-    print('Content-Type: application/vnd.google-earth.kml+xml\n')
-    logger.debug(kml)
-    print(kml)
+    logger.info(kml)
+    return kml
 
 
 if (__name__ == '__main__'):
     # pass
-    generate_kml('sdfsf')
+    generate_kml(
+        '113.3181589196196, 30.97968899527223, 113.3384812250916, 30.99556779277229'
+    )
