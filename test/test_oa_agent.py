@@ -21,8 +21,7 @@ class TestOAAgent(unittest.TestCase):
     def test_get_track_marker_list(self):
         #还没有写好
         self.assertEqual(
-            len(oa_agent.get_track_marker_list('156g%25252BsXGkoI%25253D')),
-            29)
+            len(oa_agent.get_track_marker_list('6B5KR8eFZE8%253D')), 18)
 
     def test_request_position_files(self):
         self.assertEqual(
