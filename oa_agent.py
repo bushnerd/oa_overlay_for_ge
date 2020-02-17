@@ -9,6 +9,7 @@ import json
 import logging
 
 import requests
+from lxml import etree
 
 import log
 
@@ -56,7 +57,12 @@ def find_around_track_list(lat=0, lng=0, page_number=1, page_size=8):
     response = requests.get(FIND_AROUND_TRACK_LIST_URL,
                             params=params,
                             headers=headers)
-    logger.debug('{}'.format(response.text))
+
+    html_content = etree.HTML(response.content)
+    track_id_list = html_content.xpath('//ul/li/input/@value')
+    logger.info('{} track found'.format(len(track_id_list)))
+    logger.debug('track_id_list = {}'.format(track_id_list))
+    return track_id_list
 
 
 def find_track_positions_list(track_Id=''):
@@ -215,6 +221,7 @@ def request_position_files(latitudeLeftTop=0,
 
 
 if (__name__ == '__main__'):
-    pass
     # find_around_track_list(40.32325381410464, 116.43962005594483, 1, 8)
     # find_track_positions_list('sDWvJaqS%25252BME%25253D')
+    # find_around_track_list(40.32325381410464, 116.43962005594483, 1, 100)
+    pass
