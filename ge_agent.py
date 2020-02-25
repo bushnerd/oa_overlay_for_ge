@@ -9,6 +9,7 @@ import logging
 
 import log
 import oa_agent
+from lxml import etree
 
 logger = logging.getLogger("log.{module_name}".format(module_name=__name__))
 
@@ -28,7 +29,7 @@ def generate_kml(url):
     kml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
            '<kml xmlns="http://www.opengis.net/kml/2.2">\n'
            '<Document>\n'
-           '<name>position files</name>')
+           '<name>position files</name>\n')
 
     for file in postion_files:
         longtitude = file['longtitude']
@@ -40,7 +41,13 @@ def generate_kml(url):
 
     kml = kml + '</Document>\n</kml>'
 
-    logger.info(kml)
+    logger.info('\n' + kml)
+
+    try:
+        b_kml = bytes(bytearray(kml, encoding='utf-8'))
+        etree.fromstring(b_kml)
+    except etree.XMLSyntaxError as exception:
+        logger.error(exception)
     return kml
 
 
