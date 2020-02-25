@@ -6,12 +6,18 @@
 __author__ = 'scutxd'
 
 import logging
+import os
+
+from lxml import etree
 
 import log
 import oa_agent
-from lxml import etree
 
 logger = logging.getLogger("log.{module_name}".format(module_name=__name__))
+
+XML_FILE_PATH = os.path.dirname(__file__) + '/log/'
+XML_FILE_NAME = 'kml.xml'
+XML_FILE = XML_FILE_PATH + XML_FILE_NAME
 
 
 def generate_kml(url):
@@ -47,8 +53,13 @@ def generate_kml(url):
         b_kml = bytes(bytearray(kml, encoding='utf-8'))
         etree.fromstring(b_kml)
     except etree.XMLSyntaxError as exception:
-        logger.error(exception)
-    return kml
+        # validation for kml failed, write the kml to a xml file to debug
+        logging.critical(exception)
+        with open(XML_FILE, 'w') as kml_file:
+            kml_file.write(kml)
+        return None
+    else:
+        return kml
 
 
 if (__name__ == '__main__'):

@@ -19,7 +19,6 @@ class TestOAAgent(unittest.TestCase):
             100)
 
     def test_get_track_marker_list(self):
-        #还没有写好
         self.assertEqual(
             len(oa_agent.get_track_marker_list('6B5KR8eFZE8%253D')), 18)
 
