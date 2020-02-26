@@ -269,5 +269,5 @@ if (__name__ == '__main__'):
     # find_track_positions_list('sDWvJaqS%25252BME%25253D')
     # find_around_track_list(40.32325381410464, 116.43962005594483, 1, 100)
     # get_track_marker_list('6B5KR8eFZE8%253D')
-    get_track_positions_list('6B5KR8eFZE8%253D')
+    # get_track_positions_list('6B5KR8eFZE8%253D')
     pass

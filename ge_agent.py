@@ -7,6 +7,7 @@ __author__ = 'scutxd'
 
 import logging
 import os
+import time
 
 from lxml import etree
 
@@ -20,6 +21,56 @@ XML_FILE_NAME = 'kml.kml'
 XML_FILE = XML_FILE_PATH + XML_FILE_NAME
 
 
+def generate_track_positions_list_kml(track_id):
+    track_positions_list = oa_agent.find_track_positions_list(track_id)
+
+    kml = '''<Placemark>
+        <styleUrl>#LineStringStyle</styleUrl>
+        <LineString>
+        <coordinates>'''
+    for track_positions in track_positions_list:
+        kml += '{},{} '.format(track_positions['lng'], track_positions['lat'])
+    kml += '''</coordinates>
+        </LineString>
+    </Placemark>
+    '''
+    return kml
+
+
+def generate_track_marker_list_kml(track_id):
+    track_marker_list = oa_agent.get_track_marker_list(track_id)
+    kml = ''
+    for track_marker in track_marker_list:
+        kml += '''
+        <Placemark id="realPoint">
+            <name>{text}</name>
+            <description>
+                <div>
+                    <a href="" target="_blank">
+                        <img style="height:360" src="{commnFileUrl}" />
+                    </a>
+                </div>
+                <div>经度: {longtitude}</div>
+                <div>纬度: {latitude}</div>
+                <div>时间: {time}</div>
+            </description>
+            <Point>
+                <coordinates>{co_longtitude},{co_latitude},0.0</coordinates>
+            </Point>
+        </Placemark>
+        '''.format(text=track_marker['text'],
+                   commnFileUrl=track_marker['commnFileUrl']
+                   if 'commnFileUrl' in track_marker.keys() else '',
+                   longtitude=track_marker['longitude'],
+                   latitude=track_marker['latitude'],
+                   time=time.strftime(
+                       '%Y-%m-%d %H:%M:%S',
+                       time.localtime(track_marker['createTime'] / 1000)),
+                   co_longtitude=track_marker['longitude'],
+                   co_latitude=track_marker['latitude'])
+    return kml
+
+
 def generate_around_track_kml(lat=0, lng=0, page_number=1, page_size=8):
     logger.info('lat={}, lng ={}, page_number={}, page_size={}'.format(
         lat, lng, page_number, page_size))
@@ -27,18 +78,8 @@ def generate_around_track_kml(lat=0, lng=0, page_number=1, page_size=8):
     track_id_list = oa_agent.find_around_track_list(lat, lng, page_number,
                                                     page_size)
     for track_id in track_id_list:
-        track_positions_list = oa_agent.find_track_positions_list(track_id)
-        kml += '''<Placemark>
-            <styleUrl>#LineStringStyle</styleUrl>
-            <LineString>
-            <coordinates>'''
-        for track_positions in track_positions_list:
-            kml += '{},{} '.format(track_positions['lng'],
-                                   track_positions['lat'])
-        kml += '''</coordinates>
-            </LineString>
-        </Placemark>
-        '''
+        kml += generate_track_marker_list_kml(track_id)
+        kml += generate_track_positions_list_kml(track_id)
 
     kml += '</Folder>'
     return kml
@@ -94,11 +135,11 @@ def generate_kml(url):
             </Style>'''
 
     # kml += generate_position_files_kml(north, south, west, east)
-    kml += generate_around_track_kml(center_lat, center_lng, 1, 3)
+    kml += generate_around_track_kml(center_lat, center_lng, 1, 8)
 
     kml = kml + '</Document>\n</kml>'
 
-    with open(XML_FILE, 'w') as kml_file:
+    with open(XML_FILE, mode='w', encoding='utf-8') as kml_file:
         kml_file.write(kml)
 
     try:
@@ -107,7 +148,7 @@ def generate_kml(url):
     except etree.XMLSyntaxError as exception:
         # validation for kml failed, write the kml to a xml file to debug
         logging.critical(exception)
-        with open(XML_FILE, 'w') as kml_file:
+        with open(XML_FILE, mode='w', encoding='utf-8') as kml_file:
             kml_file.write(kml)
         return None
     else:
