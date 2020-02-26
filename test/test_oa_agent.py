@@ -18,6 +18,10 @@ class TestOAAgent(unittest.TestCase):
             len(oa_agent.find_track_positions_list('5yhrp%252F88gr0%253D')),
             100)
 
+    def test_get_track_positions_list(self):
+        self.assertEqual(
+            len(oa_agent.get_track_positions_list('6B5KR8eFZE8%253D')), 791)
+
     def test_get_track_marker_list(self):
         self.assertEqual(
             len(oa_agent.get_track_marker_list('6B5KR8eFZE8%253D')), 18)

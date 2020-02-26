@@ -17,7 +17,10 @@ logger = logging.getLogger("log.{module_name}".format(module_name=__name__))
 
 FIND_AROUND_TRACK_LIST_URL = 'http://www.2bulu.com/track/find_around_track_list.htm'
 FIND_TRACK_POSITIONS_LIST_URL = 'http://www.2bulu.com/track/find_track_positions_list.htm'
+
+GET_TRACK_POSITIONS_LIST_URL = 'http://www.2bulu.com/track/get_track_positions_list4.htm'
 GET_TRACK_MARKER_LIST_URL = 'http://www.2bulu.com/track/get_track_marker_list_2.htm'
+
 REQUEST_POSITIONS_FILES_URL = 'https://helper.2bulu.com/position/reqPositionFiles'
 
 
@@ -98,6 +101,44 @@ def find_track_positions_list(track_Id=''):
     if (response.status_code == 200):
         logger.debug('{}'.format(response.json()))
         track_positions_list = response.json()['trackPositions'][0]
+        logger.info('{} track_positions found'.format(
+            len(track_positions_list)))
+        return track_positions_list
+
+
+def get_track_positions_list(track_Id=''):
+    logger.info('trackId={}'.format(track_Id))
+    headers = {
+        'Accept':
+        '*/*',
+        'Accept-Encoding':
+        'gzip, deflate',
+        'Accept-Language':
+        'zh-CN,zh;q=0.9,en;q=0.8,zh-TW;q=0.7',
+        'Cache-Control':
+        'no-cache',
+        'Connection':
+        'keep-alive',
+        'Cookie':
+        'pgv_pvid=8835094330; UM_distinctid=1700e0fb6fb23f-0841f4aa994d1e-47e1039-181db4-1700e0fb6fc94c; JSESSIONID=437B1CA9024515AE952DBC0FC564BC2B-n2; CNZZDATA1000341086=1941407547-1542934706-%7C1581947357',
+        'DNT':
+        '1',
+        'Host':
+        'www.2bulu.com',
+        'Pragma':
+        'no-cache',
+        # 'Referer':
+        # 'http://www.2bulu.com/track/t-6B5KR8eFZE8%253D.htm',
+        'User-Agent':
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
+    }
+    params = {'trackId': track_Id}
+    response = requests.get(GET_TRACK_POSITIONS_LIST_URL,
+                            params=params,
+                            headers=headers)
+    if (response.status_code == 200):
+        track_positions_list = response.json()['trackPositions'][0]
+        logger.debug('{}'.format(track_positions_list))
         logger.info('{} track_positions found'.format(
             len(track_positions_list)))
         return track_positions_list
@@ -227,5 +268,6 @@ if (__name__ == '__main__'):
     # find_around_track_list(40.32325381410464, 116.43962005594483, 1, 8)
     # find_track_positions_list('sDWvJaqS%25252BME%25253D')
     # find_around_track_list(40.32325381410464, 116.43962005594483, 1, 100)
-    get_track_marker_list('6B5KR8eFZE8%253D')
+    # get_track_marker_list('6B5KR8eFZE8%253D')
+    get_track_positions_list('6B5KR8eFZE8%253D')
     pass
