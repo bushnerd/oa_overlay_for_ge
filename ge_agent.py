@@ -16,8 +16,58 @@ import oa_agent
 logger = logging.getLogger("log.{module_name}".format(module_name=__name__))
 
 XML_FILE_PATH = os.path.dirname(__file__) + '/log/'
-XML_FILE_NAME = 'kml.xml'
+XML_FILE_NAME = 'kml.kml'
 XML_FILE = XML_FILE_PATH + XML_FILE_NAME
+
+
+def generate_around_track_kml(lat=0, lng=0, page_number=1, page_size=8):
+    logger.info('lat={}, lng ={}, page_number={}, page_size={}'.format(
+        lat, lng, page_number, page_size))
+    kml = '<Folder>'
+    track_id_list = oa_agent.find_around_track_list(lat, lng, page_number,
+                                                    page_size)
+    for track_id in track_id_list:
+        track_positions_list = oa_agent.find_track_positions_list(track_id)
+        kml += '''<Placemark>
+            <styleUrl>#LineStringStyle</styleUrl>
+            <LineString>
+            <coordinates>'''
+        for track_positions in track_positions_list:
+            kml += '{},{} '.format(track_positions['lng'],
+                                   track_positions['lat'])
+        kml += '''</coordinates>
+            </LineString>
+        </Placemark>
+        '''
+
+    kml += '</Folder>'
+    return kml
+
+
+def generate_position_files_kml(north, south, west, east):
+    kml = '<Folder>'
+
+    postion_files = oa_agent.request_position_files(north, south, west, east,
+                                                    15)
+    for file in postion_files:
+        longtitude = file['longtitude']
+        latitude = file['latitude']
+
+        kml += '''
+        <Placemark>
+        <name></name>
+        <Point>
+        '''
+
+        kml += '<coordinates>{},{},0</coordinates>'.format(
+            longtitude, latitude)
+
+        kml += '''
+        </Point>
+        </Placemark>
+        '''
+    kml += '</Folder>'
+    return kml
 
 
 def generate_kml(url):
@@ -29,25 +79,27 @@ def generate_kml(url):
     east = float(url[2])
     north = float(url[3])
 
-    postion_files = oa_agent.request_position_files(north, south, west, east,
-                                                    15)
+    center_lng = ((east - west) / 2) + west
+    center_lat = ((north - south) / 2) + south
 
     kml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
            '<kml xmlns="http://www.opengis.net/kml/2.2">\n'
            '<Document>\n'
-           '<name>position files</name>\n')
+           '<name></name>\n')
+    kml += '''<Style id="LineStringStyle">
+            <LineStyle>
+                <width>2</width>
+                <color>990074FF</color>
+            </LineStyle>
+            </Style>'''
 
-    for file in postion_files:
-        longtitude = file['longtitude']
-        latitude = file['latitude']
-
-        kml = (kml + '<Placemark>\n' + '<name></name>\n' + '<Point>\n' +
-               f'<coordinates>{longtitude},{latitude},0</coordinates>\n' +
-               '</Point>\n' + '</Placemark>\n')
+    # kml += generate_position_files_kml(north, south, west, east)
+    kml += generate_around_track_kml(center_lat, center_lng, 1, 3)
 
     kml = kml + '</Document>\n</kml>'
 
-    logger.info('\n' + kml)
+    with open(XML_FILE, 'w') as kml_file:
+        kml_file.write(kml)
 
     try:
         b_kml = bytes(bytearray(kml, encoding='utf-8'))

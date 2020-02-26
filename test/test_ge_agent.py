@@ -11,14 +11,15 @@ class TestGEAgent(unittest.TestCase):
         RESULT_KML = '''<?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
 <Document>
-<name>position files</name>
-<Placemark>
 <name></name>
-<Point>
-<coordinates>113.329384,30.986006,0</coordinates>
-</Point>
-</Placemark>
-</Document>
+<Folder>
+        <Placemark>
+        <name></name>
+        <Point>
+        <coordinates>113.329384,30.986006,0</coordinates>
+        </Point>
+        </Placemark>
+        </Folder></Document>
 </kml>'''
         self.assertEqual(
             RESULT_KML,

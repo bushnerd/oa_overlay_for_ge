@@ -23,6 +23,6 @@ file_handler = logging.FileHandler(LOG_FILE)  # 输出到文件的handler
 file_handler.setFormatter(formatter)
 file_handler.setLevel(logging.DEBUG)  # 设置文件日志级别为DEBUG
 
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=logging.INFO,
                     handlers=[console_handler, file_handler])
 logging.getLogger('chardet.charsetprober').setLevel(logging.INFO)
