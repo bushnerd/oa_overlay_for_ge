@@ -54,24 +54,27 @@ def generate_track_marker_list_kml(track_id):
                         <img style="height:360" src="{commnFileUrl}" />
                     </a>
                 </div>
-                <div>经度: {longtitude}</div>
-                <div>纬度: {latitude}</div>
-                <div>时间: {time}</div>
+                <div>longtitude: {longtitude}</div>
+                <div>latitude: {latitude}</div>
+                <div>time: {time}</div>
             </description>
             <Point>
                 <coordinates>{co_longtitude},{co_latitude},0.0</coordinates>
             </Point>
         </Placemark>
-        '''.format(text=track_marker['text'],
-                   commnFileUrl=track_marker['commnFileUrl']
-                   if 'commnFileUrl' in track_marker.keys() else '',
-                   longtitude=track_marker['longitude'],
-                   latitude=track_marker['latitude'],
-                   time=time.strftime(
-                       '%Y-%m-%d %H:%M:%S',
-                       time.localtime(track_marker['createTime'] / 1000)),
-                   co_longtitude=track_marker['longitude'],
-                   co_latitude=track_marker['latitude'])
+        '''.format(
+            # TODO:名称如果为中文的话，在google earth显示乱码,先暂时都设为空
+            # text=track_marker['text'] if track_marker['text'] else '',
+            text='',
+            commnFileUrl=track_marker['commnFileUrl']
+            if 'commnFileUrl' in track_marker.keys() else '',
+            longtitude=track_marker['longitude'],
+            latitude=track_marker['latitude'],
+            time=time.strftime(
+                '%Y-%m-%d %H:%M:%S',
+                time.localtime(track_marker['createTime'] / 1000)),
+            co_longtitude=track_marker['longitude'],
+            co_latitude=track_marker['latitude'])
     return kml
 
 

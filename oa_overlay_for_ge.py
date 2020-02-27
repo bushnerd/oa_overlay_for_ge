@@ -18,6 +18,6 @@ logger.info('BBOX url from Google Earth = {}'.format(bbox_url))
 
 kml = ge_agent.generate_kml(bbox_url)
 if kml:
-    print('Content-Type: application/vnd.google-earth.kml+xml\n')
-    # logger.info(kml)
+    print(
+        'Content-Type: application/vnd.google-earth.kml+xml; charset=utf-8\n')
     print(kml)
