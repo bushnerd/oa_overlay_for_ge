@@ -20,6 +20,10 @@ XML_FILE_PATH = os.path.dirname(__file__) + '/log/'
 XML_FILE_NAME = 'kml.kml'
 XML_FILE = XML_FILE_PATH + XML_FILE_NAME
 
+MIN_TRACK_MARKS_NUM = 5
+PAGE_SIZE = 30
+PAGE_NUMBER = 1
+
 
 def generate_track_positions_list_kml(track_id):
     track_positions_list = oa_agent.find_track_positions_list(track_id)
@@ -87,11 +91,12 @@ def generate_around_track_kml(lat=0, lng=0, page_number=1, page_size=8):
             <description>tracks and marks nearby</description>
             '''.format(lng, lat)
 
-    track_id_list = oa_agent.find_around_track_list(lat, lng, page_number,
-                                                    page_size)
-    for track_id in track_id_list:
-        kml += generate_track_positions_list_kml(track_id)
-        kml += generate_track_marker_list_kml(track_id)
+    track_list = oa_agent.find_around_track_list(lat, lng, page_number,
+                                                 page_size)
+    for track in track_list:
+        kml += generate_track_positions_list_kml(track.id)
+        if track.marks_num >= MIN_TRACK_MARKS_NUM:
+            kml += generate_track_marker_list_kml(track.id)
 
     kml += '''
         </Folder>
@@ -149,8 +154,8 @@ def generate_kml(url):
         </Style>
     '''
 
-    kml += generate_around_track_kml(center_lat, center_lng, 1, 10)
-
+    kml += generate_around_track_kml(center_lat, center_lng, PAGE_NUMBER,
+                                     PAGE_SIZE)
     kml += '''
     </Document>
 </kml>

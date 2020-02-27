@@ -7,11 +7,13 @@ __author__ = 'scutxd'
 
 import json
 import logging
+import re
 
 import requests
 from lxml import etree
 
 import log
+from Track import Track
 
 logger = logging.getLogger("log.{module_name}".format(module_name=__name__))
 
@@ -62,10 +64,21 @@ def find_around_track_list(lat=0, lng=0, page_number=1, page_size=8):
                             headers=headers)
 
     html_content = etree.HTML(response.content)
-    track_id_list = html_content.xpath('//ul/li/input/@value')
-    logger.info('{} track found'.format(len(track_id_list)))
-    logger.debug('track_id_list = {}'.format(track_id_list))
-    return track_id_list
+    li_id_list = html_content.xpath('//ul/li/input/@value')
+    span_km_list = html_content.xpath(
+        '//ul/li/div[@class=\'list_left\']/span[@class=\'km\']')
+    span_num_list = html_content.xpath(
+        '//ul/li/div[@class=\'list_left\']/span[@class=\'num\']')
+
+    track_list = []
+    if (len(li_id_list) == len(span_km_list)
+            and len(li_id_list) == len(span_num_list)):
+        for li_id, km, num in zip(li_id_list, span_km_list, span_num_list):
+            km_pattern = re.compile(r'(\d+.\d+)km')
+            distance = float(km_pattern.search(km.text).group(1))
+            track_list.append(Track(li_id, distance, int(num.text)))
+
+    return track_list
 
 
 def find_track_positions_list(track_Id=''):
@@ -259,7 +272,7 @@ def request_position_files(latitudeLeftTop=0,
                                           params=params,
                                           headers=headers)
     json = response_postion_files.json()
-    if json['errCode'] is '0':
+    if json['errCode'] == '0':
         logger.info('Get %d position files info', len(json['files']))
         return json['files']
 
