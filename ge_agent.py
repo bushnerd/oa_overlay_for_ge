@@ -24,16 +24,20 @@ XML_FILE = XML_FILE_PATH + XML_FILE_NAME
 def generate_track_positions_list_kml(track_id):
     track_positions_list = oa_agent.find_track_positions_list(track_id)
 
-    kml = '''<Placemark>
-        <styleUrl>#LineStringStyle</styleUrl>
-        <LineString>
-        <coordinates>'''
+    kml = '''
+            <Placemark>
+                <styleUrl>#LineStringStyle</styleUrl>
+                <LineString>
+                    <coordinates>
+        '''
     for track_positions in track_positions_list:
         kml += '{},{} '.format(track_positions['lng'], track_positions['lat'])
-    kml += '''</coordinates>
-        </LineString>
-    </Placemark>
-    '''
+
+    kml += '''
+                    </coordinates>
+                </LineString>
+            </Placemark>
+        '''
     return kml
 
 
@@ -74,14 +78,21 @@ def generate_track_marker_list_kml(track_id):
 def generate_around_track_kml(lat=0, lng=0, page_number=1, page_size=8):
     logger.info('lat={}, lng ={}, page_number={}, page_size={}'.format(
         lat, lng, page_number, page_size))
-    kml = '<Folder>'
+    kml = '''
+        <Folder>
+            <name>{},{}</name>
+            <description>tracks and marks nearby</description>
+            '''.format(lng, lat)
+
     track_id_list = oa_agent.find_around_track_list(lat, lng, page_number,
                                                     page_size)
     for track_id in track_id_list:
         kml += generate_track_positions_list_kml(track_id)
         kml += generate_track_marker_list_kml(track_id)
 
-    kml += '</Folder>'
+    kml += '''
+        </Folder>
+        '''
     return kml
 
 
@@ -112,7 +123,7 @@ def generate_position_files_kml(north, south, west, east):
 
 
 def generate_kml(url):
-    logger.debug('url = {}'.format(url))
+    logger.info('url = {}'.format(url))
 
     url = url.split(',')
     west = float(url[0])
@@ -123,20 +134,24 @@ def generate_kml(url):
     center_lng = ((east - west) / 2) + west
     center_lat = ((north - south) / 2) + south
 
-    kml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
-           '<kml xmlns="http://www.opengis.net/kml/2.2">\n'
-           '<Document>\n'
-           '<name></name>\n')
-    kml += '''<Style id="LineStringStyle">
+    kml = '''<?xml version="1.0" encoding="UTF-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+    <Document>
+        <name></name>
+        <Style id="LineStringStyle">
             <LineStyle>
                 <width>2</width>
                 <color>990074FF</color>
             </LineStyle>
-            </Style>'''
+        </Style>
+    '''
 
     kml += generate_around_track_kml(center_lat, center_lng, 1, 10)
 
-    kml = kml + '</Document>\n</kml>'
+    kml += '''
+    </Document>
+</kml>
+    '''
 
     with open(XML_FILE, mode='w', encoding='utf-8') as kml_file:
         kml_file.write(kml)
