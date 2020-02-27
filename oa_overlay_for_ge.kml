@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
     <Folder>
         <name>overlay_for_ge</name>
@@ -9,7 +9,7 @@
             <name>oa_overlay_for_ge</name>
             <visibility>1</visibility>
             <open>0</open>
-            <description>postion image/video from outdoor assistant</description>
+            <description>track/marker from 2bulu outdoor assistant</description>
             <refreshVisibility>0</refreshVisibility>
             <flyToView>0</flyToView>
             <Link>

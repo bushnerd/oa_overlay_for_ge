@@ -78,8 +78,8 @@ def generate_around_track_kml(lat=0, lng=0, page_number=1, page_size=8):
     track_id_list = oa_agent.find_around_track_list(lat, lng, page_number,
                                                     page_size)
     for track_id in track_id_list:
-        kml += generate_track_marker_list_kml(track_id)
         kml += generate_track_positions_list_kml(track_id)
+        kml += generate_track_marker_list_kml(track_id)
 
     kml += '</Folder>'
     return kml
@@ -134,8 +134,7 @@ def generate_kml(url):
             </LineStyle>
             </Style>'''
 
-    # kml += generate_position_files_kml(north, south, west, east)
-    kml += generate_around_track_kml(center_lat, center_lng, 1, 8)
+    kml += generate_around_track_kml(center_lat, center_lng, 1, 10)
 
     kml = kml + '</Document>\n</kml>'
 
