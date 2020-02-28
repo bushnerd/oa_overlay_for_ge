@@ -14,7 +14,7 @@ logger = logging.getLogger("log.{module_name}".format(module_name=__name__))
 
 form = cgi.FieldStorage()
 bbox_url = form.getvalue('BBOX')
-logger.info('BBOX url from Google Earth = {}'.format(bbox_url))
+logger.warning('BBOX url from Google Earth = {}'.format(bbox_url))
 
 kml = ge_agent.generate_kml(bbox_url)
 if kml:
