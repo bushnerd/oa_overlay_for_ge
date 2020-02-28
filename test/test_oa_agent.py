@@ -9,6 +9,12 @@ class TestOAAgent(unittest.TestCase):
     def test_find_around_track_list(self):
         self.assertEqual(
             len(
+                oa_agent.find_around_track_list(lat=31.453931794459308,
+                                                lng=114.6263990713093,
+                                                page_number=1,
+                                                page_size=15)), 15)
+        self.assertEqual(
+            len(
                 oa_agent.find_around_track_list(40.32325381410464,
                                                 116.43962005594483, 1, 15)),
             15)

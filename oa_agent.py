@@ -74,7 +74,8 @@ def find_around_track_list(lat=0, lng=0, page_number=1, page_size=8):
     if (len(li_id_list) == len(span_km_list)
             and len(li_id_list) == len(span_num_list)):
         for li_id, km, num in zip(li_id_list, span_km_list, span_num_list):
-            km_pattern = re.compile(r'(\d+.\d+)km')
+            # km.text maybe 4km, 0.4km, 4.4km
+            km_pattern = re.compile(r'(\d*.*\d+)km')
             distance = float(km_pattern.search(km.text).group(1))
             track_list.append(Track(li_id, distance, int(num.text)))
 
