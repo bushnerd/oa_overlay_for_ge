@@ -2,8 +2,10 @@
 # -*- coding: UTF-8 -*-
 
 import cgi
+import codecs
 # import cgitb
 import logging
+import sys
 
 import ge_agent
 import log
@@ -18,6 +20,8 @@ logger.warning('BBOX url from Google Earth = {}'.format(bbox_url))
 
 kml = ge_agent.generate_kml(bbox_url)
 if kml:
+    # print到cgi时，会按照操作系统的默认编码，导致乱码，这里强制stdout修改为utf-8
+    sys.stdout = codecs.getwriter('utf8')(sys.stdout.buffer)
     print(
         'Content-Type: application/vnd.google-earth.kml+xml; charset=utf-8\n')
     print(kml)

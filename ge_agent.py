@@ -86,9 +86,7 @@ def generate_track_marker_list_kml(track_id):
                 icon_url=track_marker['centerUrl'],
                 style_url_lng=track_marker['longitude'],
                 style_url_lat=track_marker['latitude'],
-                # TODO:名称如果为中文的话，在google earth显示乱码,先暂时都设为空
-                # text=track_marker['text'] if track_marker['text'] else '',
-                text='',
+                text=track_marker['text'] if track_marker['text'] else '',
                 commnFileUrl=track_marker['commnFileUrl'],
                 longtitude=track_marker['longitude'],
                 latitude=track_marker['latitude'],
