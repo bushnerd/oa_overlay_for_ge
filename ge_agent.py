@@ -25,15 +25,18 @@ PAGE_SIZE = 30
 PAGE_NUMBER = 1
 
 
-def generate_track_positions_list_kml(track_id):
-    track_positions_list = oa_agent.find_track_positions_list(track_id)
+def generate_track_positions_list_kml(track):
+    track_positions_list = oa_agent.find_track_positions_list(track.id)
 
     kml = '''
             <Placemark>
+                <name>Distance:{distance}Km</name>
+                <visibility>1</visibility>            <!-- boolean -->
+                <open>0</open>                        <!-- boolean -->
                 <styleUrl>#LineStringStyle</styleUrl>
                 <LineString>
                     <coordinates>
-        '''
+        '''.format(distance=track.distance)
     for track_positions in track_positions_list:
         kml += '{},{} '.format(track_positions['lng'], track_positions['lat'])
 
@@ -50,27 +53,40 @@ def generate_track_marker_list_kml(track_id):
     kml = ''
     for track_marker in track_marker_list:
         if 'commnFileUrl' in track_marker.keys():
+            # kml += '''
+            # <Style id="{style_id_lng},{style_id_lat}">
+            #     <IconStyle>
+            #         <scale>2</scale>
+            #         <Icon>
+            #             <href>{icon_url}</href>
+            #         </Icon>
+            #         <hotSpot x="0.5" y="0.5" xunits="pixels" yunits="fraction" />
+            #     </IconStyle>
+            #     <LineStyle>
+            #         <color>8000aaff</color>
+            #         <width>3</width>
+            #     </LineStyle>
+            # </Style>
+            # <Placemark id="realPoint">
+            #     <visibility>0</visibility>            <!-- boolean -->
+            #     <styleUrl>#{style_url_lng},{style_url_lat}</styleUrl>
+            #     <name>{name}</name>
+            #     <description><![CDATA[
+            #         <img style="height:360" src="{commnFileUrl}"/><br>
+            #         {time}]]>
+            #     </description>
+            #     <Point>
+            #         <extrude>1</extrude>
+            #         <altitudeMode>relativeToGround</altitudeMode>
+            #         <coordinates>{co_longtitude},{co_latitude},30</coordinates>
+            #     </Point>
+            # </Placemark>
             kml += '''
-            <Style id="{style_id_lng},{style_id_lat}">
-                <IconStyle>
-                    <scale>2</scale>
-                    <Icon>
-                        <href>{icon_url}</href>
-                    </Icon>
-                    <hotSpot x="0.5" y="0.5" xunits="pixels" yunits="fraction" />
-                </IconStyle>
-                <LineStyle>
-                    <color>8000aaff</color>
-                    <width>3</width>
-                </LineStyle>
-            </Style>
             <Placemark id="realPoint">
-                <styleUrl>#{style_url_lng},{style_url_lat}</styleUrl>
-                <name>{text}</name>
+                <visibility>0</visibility>            <!-- boolean -->
+                <name>{name}</name>
                 <description><![CDATA[
                     <img style="height:360" src="{commnFileUrl}"/><br>
-                    Longtitude: {longtitude}<br>
-                    Latitude: {latitude}<br>
                     {time}]]>
                 </description>
                 <Point>
@@ -80,16 +96,14 @@ def generate_track_marker_list_kml(track_id):
                 </Point>
             </Placemark>
             '''.format(
-                style_id_lng=track_marker['longitude'],
-                style_id_lat=track_marker['latitude'],
                 # TODO:如果用图片直接作为图标的话，造成太多请求，导致图片无法访问
-                icon_url=track_marker['centerUrl'],
-                style_url_lng=track_marker['longitude'],
-                style_url_lat=track_marker['latitude'],
-                text=track_marker['text'] if track_marker['text'] else '',
+                # style_id_lng=track_marker['longitude'],
+                # style_id_lat=track_marker['latitude'],
+                # icon_url=track_marker['centerUrl'],
+                # style_url_lng=track_marker['longitude'],
+                # style_url_lat=track_marker['latitude'],
+                name=track_marker['text'] if track_marker['text'] else '',
                 commnFileUrl=track_marker['commnFileUrl'],
-                longtitude=track_marker['longitude'],
-                latitude=track_marker['latitude'],
                 time=time.strftime(
                     'Time: %Y-%m-%d %H:%M:%S',
                     time.localtime(track_marker['createTime'] / 1000))
@@ -111,9 +125,18 @@ def generate_around_track_kml(lat=0, lng=0, page_number=1, page_size=8):
     track_list = oa_agent.find_around_track_list(lat, lng, page_number,
                                                  page_size)
     for track in track_list:
-        # kml += generate_track_positions_list_kml(track.id)
         if track.marks_num >= MIN_TRACK_MARKS_NUM:
+            kml += '''
+                <Folder>
+                    <name>{track_title}</name>
+                    <visibility>1</visibility>            <!-- boolean -->
+                    <open>0</open>                        <!-- boolean -->
+                    '''.format(track_title=track.title)
+            kml += generate_track_positions_list_kml(track)
             kml += generate_track_marker_list_kml(track.id)
+            kml += '''
+                </Folder>
+                '''
 
     kml += '''
         </Folder>
@@ -165,9 +188,19 @@ def generate_kml(url):
         <name></name>
         <Style id="LineStringStyle">
             <LineStyle>
-                <width>2</width>
+                <width>3</width>
                 <color>990074FF</color>
+                <colorMode>random</colorMode>      <!-- kml:colorModeEnum: normal or random -->
             </LineStyle>
+        </Style>
+        <Style id="MarkStyle">
+            <IconStyle>
+                <scale>1</scale>
+                <Icon>
+                    <href>grn-blank.png</href>
+                </Icon>
+                <hotSpot x="0.5" y="0.5" xunits="pixels" yunits="fraction" />
+            </IconStyle>
         </Style>
     '''
 
@@ -196,7 +229,7 @@ def generate_kml(url):
 
 if (__name__ == '__main__'):
     # pass
-    generate_track_marker_list_kml('6B5KR8eFZE8%253D')
-    # generate_kml(
-    #     '113.3181589196196, 30.97968899527223, 113.3384812250916, 30.99556779277229'
-    # )
+    # generate_track_marker_list_kml('6B5KR8eFZE8%253D')
+    generate_kml(
+        '113.3181589196196, 30.97968899527223, 113.3384812250916, 30.99556779277229'
+    )

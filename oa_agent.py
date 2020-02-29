@@ -63,8 +63,10 @@ def find_around_track_list(lat=0, lng=0, page_number=1, page_size=8):
                             params=params,
                             headers=headers)
 
-    html_content = etree.HTML(response.content)
+    html_content = etree.HTML(response.text)
     li_id_list = html_content.xpath('//ul/li/input/@value')
+    title_list = html_content.xpath(
+        '//ul/li/div[@class=\'list_left\']/p/@title')
     span_km_list = html_content.xpath(
         '//ul/li/div[@class=\'list_left\']/span[@class=\'km\']')
     span_num_list = html_content.xpath(
@@ -72,12 +74,15 @@ def find_around_track_list(lat=0, lng=0, page_number=1, page_size=8):
 
     track_list = []
     if (len(li_id_list) == len(span_km_list)
-            and len(li_id_list) == len(span_num_list)):
-        for li_id, km, num in zip(li_id_list, span_km_list, span_num_list):
+            and len(li_id_list) == len(span_num_list)
+            and len(li_id_list) == len(title_list)):
+        for li_id, title, km, num in zip(li_id_list, title_list, span_km_list,
+                                         span_num_list):
             # km.text maybe 4km, 0.4km, 4.4km
             km_pattern = re.compile(r'(\d*.*\d+)km')
             distance = float(km_pattern.search(km.text).group(1))
-            track_list.append(Track(li_id, distance, int(num.text)))
+            track_list.append(Track(li_id, str(title), distance,
+                                    int(num.text)))
 
     return track_list
 

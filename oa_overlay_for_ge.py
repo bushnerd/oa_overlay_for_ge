@@ -22,6 +22,5 @@ kml = ge_agent.generate_kml(bbox_url)
 if kml:
     # print到cgi时，会按照操作系统的默认编码，导致乱码，这里强制stdout修改为utf-8
     sys.stdout = codecs.getwriter('utf8')(sys.stdout.buffer)
-    print(
-        'Content-Type: application/vnd.google-earth.kml+xml; charset=utf-8\n')
+    print('Content-Type: text/plain; charset=utf-8\n')
     print(kml)
