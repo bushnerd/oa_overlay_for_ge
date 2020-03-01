@@ -33,7 +33,7 @@ def generate_track_positions_list_kml(track):
                 <name>Distance:{distance}Km</name>
                 <visibility>1</visibility>            <!-- boolean -->
                 <open>0</open>                        <!-- boolean -->
-                <styleUrl>#LineStringStyle</styleUrl>
+                <styleUrl>#TrackStyle</styleUrl>
                 <LineString>
                     <coordinates>
         '''.format(distance=track.distance)
@@ -183,13 +183,30 @@ def generate_kml(url):
     <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/atom">
     <Document>
         <name></name>
-        <Style id="LineStringStyle">
+        <Style id="TrackStyle_n">
             <LineStyle>
-                <width>3</width>
-                <color>990074FF</color>
-                <colorMode>random</colorMode>      <!-- kml:colorModeEnum: normal or random -->
+                <color>8899ff66</color>
+                <colorMode>random</colorMode> <!-- kml:colorModeEnum: normal or random -->
+                <width>2</width>
             </LineStyle>
         </Style>
+        <Style id="TrackStyle_h">
+            <LineStyle>
+                <color>ff99ff66</color>
+                <colorMode>random</colorMode> <!-- kml:colorModeEnum: normal or random -->
+                <width>3</width>
+            </LineStyle>
+        </Style>
+        <StyleMap id="TrackStyle">
+            <Pair>
+                <key>normal</key>
+                <styleUrl>#TrackStyle_n</styleUrl>
+            </Pair>
+            <Pair>
+                <key>highlight</key>
+                <styleUrl>#TrackStyle_h</styleUrl>
+            </Pair>
+        </StyleMap>
         <Style id="MarkStyle">
             <IconStyle>
                 <scale>1</scale>
