@@ -81,12 +81,16 @@ def generate_track_marker_list_kml(track_id):
             #         <coordinates>{co_longtitude},{co_latitude},30</coordinates>
             #     </Point>
             # </Placemark>
+            # TODO:google kml中提供<gx:balloonVisibility>来实现遍历mark，依次打开，但是需要创建<gx:Tour>，构造需要做两次遍历
+            # google earth有个选项，Touring->When creating a tour from a folder->Show ballon when waiting at features，但是不奏效
             kml += '''
             <Placemark id="realPoint">
                 <visibility>0</visibility>            <!-- boolean -->
                 <name>{name}</name>
                 <description><![CDATA[
-                    <img style="height:360" src="{imgFileUrl}"/><br>
+                    <a href="{commnFileUrl}">
+                    <img src="{bigUrl}"/><br>
+                    </a>
                     {time}]]>
                 </description>
                 <Point>
@@ -103,11 +107,12 @@ def generate_track_marker_list_kml(track_id):
                 # style_url_lng=track_marker['longitude'],
                 # style_url_lat=track_marker['latitude'],
                 name=track_marker['text'] if track_marker['text'] else '',
+                commnFileUrl=track_marker['commnFileUrl'],
                 # 图片大小依次递增：
                 # centerUrl:
                 # bigUrl
                 # commnFileUrl
-                imgFileUrl=track_marker['bigUrl'],
+                bigUrl=track_marker['bigUrl'],
                 time=time.strftime(
                     'Time: %Y-%m-%d %H:%M:%S',
                     time.localtime(track_marker['createTime'] / 1000))

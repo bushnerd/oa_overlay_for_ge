@@ -23,5 +23,5 @@ file_handler = logging.FileHandler(LOG_FILE)  # 输出到文件的handler
 file_handler.setFormatter(formatter)
 file_handler.setLevel(logging.INFO)  # 设置文件日志级别为DEBUG
 
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(level=logging.WARNING,
                     handlers=[console_handler, file_handler])
