@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
-    <Folder>
-        <name>overlay_for_ge</name>
+    <NetworkLink>
+        <name>oa_overlay_for_ge</name>
         <visibility>1</visibility>
         <open>0</open>
-        <description>additional overlay for google earth pro</description>
-        <NetworkLink>
-            <name>oa_overlay_for_ge</name>
-            <visibility>1</visibility>
-            <open>0</open>
-            <description>track/marker from 2bulu outdoor assistant</description>
-            <refreshVisibility>0</refreshVisibility>
-            <flyToView>0</flyToView>
-            <Link>
-                <href>http://127.0.0.1/cgi-bin/oa_overlay_for_ge.py</href>
-                <viewRefreshMode>onStop</viewRefreshMode>
-                <viewRefreshTime>1</viewRefreshTime>
-            </Link>
-        </NetworkLink>
-    </Folder>
+        <description>track/marker from 2bulu outdoor assistant</description>
+        <refreshVisibility>0</refreshVisibility>
+        <flyToView>0</flyToView>
+        <Link>
+            <href>http://127.0.0.1/cgi-bin/oa_overlay_for_ge.py</href>
+            <!-- <viewRefreshMode>onRegion</viewRefreshMode> -->
+            <!-- <viewRefreshTime>1</viewRefreshTime> -->
+            <viewRefreshMode>onRequest</viewRefreshMode>
+            <!-- <viewRefreshTime>1</viewRefreshTime> -->
+            <viewFormat>BBOX=[bboxWest],[bboxSouth],[bboxEast],[bboxNorth]</viewFormat>
+        </Link>
+    </NetworkLink>
 </kml>

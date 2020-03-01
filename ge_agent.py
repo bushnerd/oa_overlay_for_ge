@@ -86,7 +86,7 @@ def generate_track_marker_list_kml(track_id):
                 <visibility>0</visibility>            <!-- boolean -->
                 <name>{name}</name>
                 <description><![CDATA[
-                    <img style="height:360" src="{commnFileUrl}"/><br>
+                    <img style="height:360" src="{imgFileUrl}"/><br>
                     {time}]]>
                 </description>
                 <Point>
@@ -103,7 +103,11 @@ def generate_track_marker_list_kml(track_id):
                 # style_url_lng=track_marker['longitude'],
                 # style_url_lat=track_marker['latitude'],
                 name=track_marker['text'] if track_marker['text'] else '',
-                commnFileUrl=track_marker['commnFileUrl'],
+                # 图片大小依次递增：
+                # centerUrl:
+                # bigUrl
+                # commnFileUrl
+                imgFileUrl=track_marker['bigUrl'],
                 time=time.strftime(
                     'Time: %Y-%m-%d %H:%M:%S',
                     time.localtime(track_marker['createTime'] / 1000))
@@ -116,11 +120,7 @@ def generate_track_marker_list_kml(track_id):
 def generate_around_track_kml(lat=0, lng=0, page_number=1, page_size=8):
     logger.info('lat={}, lng ={}, page_number={}, page_size={}'.format(
         lat, lng, page_number, page_size))
-    kml = '''
-        <Folder>
-            <name>{},{}</name>
-            <description>tracks and marks nearby</description>
-            '''.format(lng, lat)
+    kml = ''
 
     track_list = oa_agent.find_around_track_list(lat, lng, page_number,
                                                  page_size)
@@ -138,9 +138,6 @@ def generate_around_track_kml(lat=0, lng=0, page_number=1, page_size=8):
                 </Folder>
                 '''
 
-    kml += '''
-        </Folder>
-        '''
     return kml
 
 
