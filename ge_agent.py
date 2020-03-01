@@ -21,6 +21,7 @@ XML_FILE_NAME = 'kml.kml'
 XML_FILE = XML_FILE_PATH + XML_FILE_NAME
 
 MIN_TRACK_MARKS_NUM = 5
+MAX_TRACK_DISTANCE = 100
 PAGE_SIZE = 30
 PAGE_NUMBER = 1
 
@@ -130,7 +131,7 @@ def generate_around_track_kml(lat=0, lng=0, page_number=1, page_size=8):
     track_list = oa_agent.find_around_track_list(lat, lng, page_number,
                                                  page_size)
     for track in track_list:
-        if track.marks_num >= MIN_TRACK_MARKS_NUM:
+        if track.marks_num >= MIN_TRACK_MARKS_NUM and track.distance <= MAX_TRACK_DISTANCE:
             kml += '''
                 <Folder>
                     <name>{track_title}</name>
@@ -176,13 +177,9 @@ def generate_kml(url):
     logger.info('url = {}'.format(url))
 
     url = url.split(',')
-    west = float(url[0])
-    south = float(url[1])
-    east = float(url[2])
-    north = float(url[3])
 
-    center_lng = ((east - west) / 2) + west
-    center_lat = ((north - south) / 2) + south
+    center_lng = float(url[0])
+    center_lat = float(url[1])
 
     kml = '''<?xml version="1.0" encoding="utf-8" ?>
     <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/atom">
@@ -190,14 +187,14 @@ def generate_kml(url):
         <name></name>
         <Style id="TrackStyle_n">
             <LineStyle>
-                <color>8899ff66</color>
+                <color>880000cc</color>
                 <colorMode>random</colorMode> <!-- kml:colorModeEnum: normal or random -->
                 <width>2</width>
             </LineStyle>
         </Style>
         <Style id="TrackStyle_h">
             <LineStyle>
-                <color>ff99ff66</color>
+                <color>ff0000cc</color>
                 <colorMode>random</colorMode> <!-- kml:colorModeEnum: normal or random -->
                 <width>3</width>
             </LineStyle>

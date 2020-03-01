@@ -4,7 +4,7 @@
         <name>oa_overlay_for_ge</name>
         <visibility>1</visibility>
         <open>0</open>
-        <description>track/marker from 2bulu outdoor assistant</description>
+        <!-- <description>track/marker from 2bulu outdoor assistant</description> -->
         <refreshVisibility>0</refreshVisibility>
         <flyToView>1</flyToView>
         <Link>
@@ -13,7 +13,7 @@
             <!-- <viewRefreshTime>1</viewRefreshTime> -->
             <viewRefreshMode>onRequest</viewRefreshMode>
             <!-- <viewRefreshTime>1</viewRefreshTime> -->
-            <viewFormat>BBOX=[bboxWest],[bboxSouth],[bboxEast],[bboxNorth]</viewFormat>
+            <viewFormat>BBOX=[lookatLon],[lookatLat]</viewFormat>
         </Link>
     </NetworkLink>
 </kml>
