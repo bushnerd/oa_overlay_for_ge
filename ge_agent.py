@@ -112,7 +112,7 @@ def generate_track_marker_list_kml(track_id):
                 # centerUrl:
                 # bigUrl
                 # commnFileUrl
-                bigUrl=track_marker['bigUrl'],
+                bigUrl=track_marker['centerUrl'],
                 time=time.strftime(
                     'Time: %Y-%m-%d %H:%M:%S',
                     time.localtime(track_marker['createTime'] / 1000))
@@ -230,8 +230,8 @@ def generate_kml(url):
 </kml>
     '''
 
-    with open(XML_FILE, mode='w', encoding='utf-8') as kml_file:
-        kml_file.write(kml)
+    # with open(XML_FILE, mode='w', encoding='utf-8') as kml_file:
+    #     kml_file.write(kml)
 
     try:
         b_kml = bytes(bytearray(kml, encoding='utf-8'))
