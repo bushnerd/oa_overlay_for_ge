@@ -1,4 +1,4 @@
-#!D:\Program Files (x86)\Python38-32\python.exe
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 ' logger module '
