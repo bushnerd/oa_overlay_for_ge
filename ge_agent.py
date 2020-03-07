@@ -27,7 +27,7 @@ PAGE_NUMBER = 1
 
 
 def generate_track_positions_list_kml(track):
-    track_positions_list = oa_agent.find_track_positions_list(track.id)
+    oa_agent.find_track_positions_list(track)
 
     kml = '''
             <Placemark>
@@ -38,7 +38,7 @@ def generate_track_positions_list_kml(track):
                 <LineString>
                     <coordinates>
         '''.format(distance=track.distance)
-    for track_positions in track_positions_list:
+    for track_positions in track.track_positions_list:
         kml += '{},{} '.format(track_positions['lng'], track_positions['lat'])
 
     kml += '''
@@ -49,43 +49,69 @@ def generate_track_positions_list_kml(track):
     return kml
 
 
-def generate_track_marker_list_kml(track_id):
-    track_marker_list = oa_agent.get_track_marker_list(track_id)
-    kml = ''
-    for track_marker in track_marker_list:
+def generate_track_marker_list_kml(track):
+    oa_agent.get_track_marker_list(track)
+    kml = '''
+        <gx:Tour>
+            <name>Play the mark tour</name>
+            <gx:Playlist>
+    '''
+    for track_marker in track.track_marker_list:
         if 'commnFileUrl' in track_marker.keys():
-            # kml += '''
-            # <Style id="{style_id_lng},{style_id_lat}">
-            #     <IconStyle>
-            #         <scale>2</scale>
-            #         <Icon>
-            #             <href>{icon_url}</href>
-            #         </Icon>
-            #         <hotSpot x="0.5" y="0.5" xunits="pixels" yunits="fraction" />
-            #     </IconStyle>
-            #     <LineStyle>
-            #         <color>8000aaff</color>
-            #         <width>3</width>
-            #     </LineStyle>
-            # </Style>
-            # <Placemark id="realPoint">
-            #     <visibility>0</visibility>            <!-- boolean -->
-            #     <styleUrl>#{style_url_lng},{style_url_lat}</styleUrl>
-            #     <name>{name}</name>
-            #     <description><![CDATA[
-            #         <img style="height:360" src="{commnFileUrl}"/><br>
-            #         {time}]]>
-            #     </description>
-            #     <Point>
-            #         <extrude>1</extrude>
-            #         <altitudeMode>relativeToGround</altitudeMode>
-            #         <coordinates>{co_longtitude},{co_latitude},30</coordinates>
-            #     </Point>
-            # </Placemark>
-            # TODO:google kml中提供<gx:balloonVisibility>来实现遍历mark，依次打开，但是需要创建<gx:Tour>，构造需要做两次遍历
-            # google earth有个选项，Touring->When creating a tour from a folder->Show ballon when waiting at features，但是不奏效
             kml += '''
-            <Placemark id="realPoint">
+                <gx:FlyTo>
+                    <gx:duration>2.0</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>{flyto_lng}</longitude>
+                        <latitude>{flyto_lat}</latitude>
+                        <range>800</range>
+                        <tilt>60</tilt>
+                        <altitude>30</altitude>
+                        <altitudeMode>relativeToGround</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+
+                <gx:AnimatedUpdate>
+                    <!-- the default duration is 0.0 -->
+                    <Update>
+                        <targetHref />
+                        <Change>
+                            <Placemark targetId="{ani_lng_1},{ani_lat_1}">
+                                <gx:balloonVisibility>1</gx:balloonVisibility>
+                            </Placemark>
+                        </Change>
+                    </Update>
+                </gx:AnimatedUpdate>
+
+                <gx:Wait>
+                    <gx:duration>5.0</gx:duration>
+                </gx:Wait>
+
+                <gx:AnimatedUpdate>
+                    <Update>
+                        <targetHref />
+                        <Change>
+                            <Placemark targetId="{ani_lng_0},{ani_lat_0}">
+                                <gx:balloonVisibility>0</gx:balloonVisibility>
+                            </Placemark>
+                        </Change>
+                    </Update>
+                </gx:AnimatedUpdate>
+            '''.format(flyto_lng=track_marker['longitude'],
+                       flyto_lat=track_marker['latitude'],
+                       ani_lng_1=track_marker['longitude'],
+                       ani_lat_1=track_marker['latitude'],
+                       ani_lng_0=track_marker['longitude'],
+                       ani_lat_0=track_marker['latitude'])
+    kml += '''
+            </gx:Playlist>
+        </gx:Tour>
+    '''
+    for track_marker in track.track_marker_list:
+        if 'commnFileUrl' in track_marker.keys():
+            kml += '''
+            <Placemark id="{id_lng},{id_lat}">
                 <visibility>0</visibility>            <!-- boolean -->
                 <name>{name}</name>
                 <description><![CDATA[
@@ -101,12 +127,8 @@ def generate_track_marker_list_kml(track_id):
                 </Point>
             </Placemark>
             '''.format(
-                # TODO:如果用图片直接作为图标的话，造成太多请求，导致图片无法访问
-                # style_id_lng=track_marker['longitude'],
-                # style_id_lat=track_marker['latitude'],
-                # icon_url=track_marker['centerUrl'],
-                # style_url_lng=track_marker['longitude'],
-                # style_url_lat=track_marker['latitude'],
+                id_lng=track_marker['longitude'],
+                id_lat=track_marker['latitude'],
                 name=track_marker['text'] if track_marker['text'] else '',
                 commnFileUrl=track_marker['commnFileUrl'],
                 # 图片大小依次递增：
@@ -139,7 +161,7 @@ def generate_around_track_kml(lat=0, lng=0, page_number=1, page_size=8):
                     <open>0</open>                        <!-- boolean -->
                     '''.format(track_title=track.title)
             kml += generate_track_positions_list_kml(track)
-            kml += generate_track_marker_list_kml(track.id)
+            kml += generate_track_marker_list_kml(track)
             kml += '''
                 </Folder>
                 '''
@@ -182,7 +204,7 @@ def generate_kml(url):
     center_lat = float(url[1])
 
     kml = '''<?xml version="1.0" encoding="utf-8" ?>
-    <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/atom">
+    <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
     <Document>
         <name></name>
         <Style id="TrackStyle_n">
