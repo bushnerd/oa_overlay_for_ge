@@ -48,8 +48,8 @@ def find_around_track_list(lat=0, lng=0, page_number=1, page_size=8):
         'www.2bulu.com',
         'Pragma':
         'no-cache',
-        'Referer':
-        'http://www.2bulu.com/track/track_nearby_map.htm?lng=116.439606&lat=40.323242&remark=%E5%8C%97%E4%BA%AC%E5%B8%82-%E5%A4%A7%E7%BE%8A%E5%B1%B1',
+        # 'Referer':
+        # 'http://www.2bulu.com/track/track_nearby_map.htm?lng=116.439606&lat=40.323242&remark=%E5%8C%97%E4%BA%AC%E5%B8%82-%E5%A4%A7%E7%BE%8A%E5%B1%B1',
         'User-Agent':
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
     }
@@ -87,8 +87,8 @@ def find_around_track_list(lat=0, lng=0, page_number=1, page_size=8):
     return track_list
 
 
-def find_track_positions_list(track_Id=''):
-    logger.info('trackId={}'.format(track_Id))
+def find_track_positions_list(track):
+    logger.info('trackId={}'.format(track.id))
     headers = {
         'Accept':
         '*/*',
@@ -108,12 +108,15 @@ def find_track_positions_list(track_Id=''):
         'www.2bulu.com',
         'Pragma':
         'no-cache',
-        'Referer':
-        'http://www.2bulu.com/track/track_nearby_map.htm?lng=116.439606&lat=40.323242&remark=%E5%8C%97%E4%BA%AC%E5%B8%82-%E5%A4%A7%E7%BE%8A%E5%B1%B1',
+        # 'Referer':
+        # 'http://www.2bulu.com/track/track_nearby_map.htm?lng=116.439606&lat=40.323242&remark=%E5%8C%97%E4%BA%AC%E5%B8%82-%E5%A4%A7%E7%BE%8A%E5%B1%B1',
         'User-Agent':
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
     }
-    params = {'trackId': track_Id}
+    # https://stackoverflow.com/questions/23496750/how-to-prevent-python-requests-from-percent-encoding-my-urls/23497912
+    # If the params is dict, requests lib encodes url(Such as '%' to '%25')
+    # So i change the params to string
+    params = '&trackId={}'.format(track.id)
     response = requests.get(FIND_TRACK_POSITIONS_LIST_URL,
                             params=params,
                             headers=headers)
@@ -122,7 +125,7 @@ def find_track_positions_list(track_Id=''):
         track_positions_list = response.json()['trackPositions'][0]
         logger.info('{} track_positions found'.format(
             len(track_positions_list)))
-        return track_positions_list
+        track.track_positions_list = track_positions_list
 
 
 def get_track_positions_list(track_Id=''):
@@ -163,8 +166,8 @@ def get_track_positions_list(track_Id=''):
         return track_positions_list
 
 
-def get_track_marker_list(track_Id=''):
-    logger.info('trackId={}'.format(track_Id))
+def get_track_marker_list(track):
+    logger.info('trackId={}'.format(track.id))
     headers = {
         'Accept':
         '*/*',
@@ -184,12 +187,12 @@ def get_track_marker_list(track_Id=''):
         'www.2bulu.com',
         'Pragma':
         'no-cache',
-        'Referer':
-        'http://www.2bulu.com/track/t-6B5KR8eFZE8%253D.htm',
+        # 'Referer':
+        # 'http://www.2bulu.com/track/t-6B5KR8eFZE8%253D.htm',
         'User-Agent':
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
     }
-    params = {'trackId': track_Id}
+    params = '&trackId={}'.format(track.id)
     response = requests.get(GET_TRACK_MARKER_LIST_URL,
                             params=params,
                             headers=headers)
@@ -197,7 +200,7 @@ def get_track_marker_list(track_Id=''):
         track_marker_list = response.json()
         logger.debug('{}'.format(track_marker_list))
         logger.info('{} track_marker found'.format(len(track_marker_list)))
-        return track_marker_list
+        track.track_marker_list = track_marker_list
 
 
 # mapHierarchy不确定这个参数是否有用，还有一个isMaxHierarchy，可能是缩放层级大于多少才请求图片，要不然请求了也显示不完全
