@@ -1,9 +1,8 @@
-#!D:/Program Files (x86)/Python38-32/python.exe
+#!python
 # -*- coding: UTF-8 -*-
 
 import cgi
 import codecs
-# import cgitb
 import logging
 import sys
 
@@ -11,7 +10,6 @@ import ge_agent
 import log
 import oa_agent
 
-# cgitb.enable()
 logger = logging.getLogger("log.{module_name}".format(module_name=__name__))
 
 form = cgi.FieldStorage()
