@@ -2,6 +2,8 @@
 # -*- coding: UTF-8 -*-
 
 import cgi
+import cgitb
+cgitb.enable()
 import codecs
 import logging
 import sys
