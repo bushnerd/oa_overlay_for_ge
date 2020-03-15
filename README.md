@@ -47,7 +47,7 @@ yapf==0.29.0
 
 1. 进入主目录，运行`launch_oa_overlay_for_ge.bat`
 2. 双击`oa_overlay_for_ge.kml`
-3. 定位到你感兴趣的点，然后右键 oa_overlay_for_ge 刷新
+3. 定位到你感兴趣的点，然后右键 `oa_overlay_for_ge` 刷新
 4. 稍后就会看到你感兴趣的轨迹和标签了
 
 ## 维护者
