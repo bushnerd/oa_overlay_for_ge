@@ -1,7 +1,5 @@
-*.log*
 0Collection/
 __pycache__/
 misc/
 .vscode/
 *.swp
-log/
