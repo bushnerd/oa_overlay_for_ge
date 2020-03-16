@@ -17,31 +17,7 @@ ge = google earth pro
 
 1. 这个项目使用 [python3.8](https://www.python.org/) . 请确保你本地安装了它们。
 
-2. 进入主要目录，使用如下命令安装如下依赖库：
-
-```batch
-pip install -r requirements.txt
-```
-
-```batch
-astroid==2.3.3
-certifi==2019.11.28
-chardet==3.0.4
-colorama==0.4.3
-idna==2.9
-isort==4.3.21
-lazy-object-proxy==1.4.3
-lxml==4.5.0
-mccabe==0.6.1
-pylint==2.4.4
-requests==2.23.0
-six==1.14.0
-urllib3==1.25.8
-wrapt==1.11.2
-yapf==0.29.0
-```
-
-3. 当然还要安装大名鼎鼎的[Google Earth pro](https://www.google.com/earth/versions/#earth-pro)
+2. 当然还要安装大名鼎鼎的[Google Earth pro](https://www.google.com/earth/versions/#earth-pro)
 
 ## 使用说明
 
