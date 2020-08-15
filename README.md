@@ -26,6 +26,17 @@ ge = google earth pro
 3. 定位到你感兴趣的点，然后右键 `oa_overlay_for_ge` 刷新
 4. 稍后就会看到你感兴趣的轨迹和标签了
 
+## 关于 ge 的版本的问题
+
+[See notes on Google Earth releases - Google Earth Help](https://support.google.com/earth/answer/40901?hl=en)
+
+[Download a Google Earth Pro direct installer](https://support.google.com/earth/answer/168344?hl=en)
+Google 的大部分桌面产品都采用静默安装，这里提供了离线版的安装文件，可以自定义选择安装目录,同时也提供了部分老版本的下载。
+
+目前最新版本 v7.3.3 去掉了一些图层，并且出现搜索功能不走的代理的情况，经过采用 fiddler 抓包查看，判断问题应该是出在 ge 自己身上。
+
+从老版本的链接中下载目前能用的版本为 googleearth-win-pro-7.1.8.3036，因此上传到库中作为备份。
+
 ## 维护者
 
 [@scutxd](https://github.com/scutxd).
