@@ -33,7 +33,7 @@ ge = google earth pro
 [Download a Google Earth Pro direct installer](https://support.google.com/earth/answer/168344?hl=en)
 Google 的大部分桌面产品都采用静默安装，这里提供了离线版的安装文件，可以自定义选择安装目录,同时也提供了部分老版本的下载。
 
-目前最新版本 v7.3.3 去掉了一些图层，并且出现搜索功能不走的代理的情况，经过采用 fiddler 抓包查看，判断问题应该是出在 ge 自己身上。
+目前最新版本 v7.3.3 去掉了一些图层，并且出现搜索功能不走的代理(kh.google.com被墙后，才发现正常的数据下载也是不走代理的)的情况，经过采用 fiddler 抓包查看，判断问题应该是出在 ge 自己身上。
 
 从老版本的链接中下载目前能用的版本为 googleearth-win-pro-7.1.8.3036，因此上传到库中作为备份。
 
