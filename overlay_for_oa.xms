@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<mapsources version="1">
+    <mapSource>
+        <name>mapbox+tiandi</name>
+        <des>mapbox+tiandi</des>
+        <coordinateSystem>wgs84</coordinateSystem>
+        <tiles>
+            <tile>
+                <name>mapbox</name>
+                <url><![CDATA[https://a.tiles.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic2N1dHhkIiwiYSI6ImNrcjF2c204YzFqaTEydnF1eW5lczNlb3gifQ.FJpJs3fQXg9V4ig0xpk9LQ]]></url>
+                <host></host>
+                <minzoom>1</minzoom>
+                <maxzoom>21</maxzoom>
+                <tileSize>512</tileSize>
+            </tile>
+            <tile>
+                <name>天地名</name>
+                <url><![CDATA[https://{host}.tianditu.gov.cn/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=b9717fe9412dcdb7787e6cf3cac8c449]]></url>
+                <host>t0,t1,t2,t3,t4,t5,t6</host>
+                <minzoom>1</minzoom>
+                <maxzoom>18</maxzoom>
+                <tileSize>512</tileSize>
+            </tile>
+        </tiles>
+    </mapSource>
+    <mapSource>
+        <name>ARCGIS+tiandi</name>
+        <des>ARCGIS+tiandi</des>
+        <coordinateSystem>wgs84</coordinateSystem>
+        <tiles>
+            <tile>
+                <name>ARCGIS卫星</name>
+                <url><![CDATA[https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}]]></url>
+                <host></host>
+                <minzoom>1</minzoom>
+                <maxzoom>21</maxzoom>
+                <tileSize>512</tileSize>
+            </tile>
+            <tile>
+                <name>天地名</name>
+                <url><![CDATA[https://{host}.tianditu.gov.cn/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=b9717fe9412dcdb7787e6cf3cac8c449]]></url>
+                <host>t0,t1,t2,t3,t4,t5,t6</host>
+                <minzoom>1</minzoom>
+                <maxzoom>18</maxzoom>
+                <tileSize>512</tileSize>
+            </tile>
+        </tiles>
+    </mapSource>
+
+</mapsources>
